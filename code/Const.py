@@ -1,2 +1,12 @@
+# C
+C_GREEN = (0, 255, 0)
+C_WHITE = (255, 255, 255)
+
+# M
+MENU_OPTION = ('NEW GAME',
+        'SCORE',
+        'EXIT')
+
+# W
 WIN_WIDTH = 700
 WIN_HEIGHT = 520

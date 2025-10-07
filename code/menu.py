@@ -5,6 +5,8 @@ from pygame.rect import Rect
 from pygame.surface import Surface
 from pygame.font import Font
 
+from code.Const import WIN_WIDTH, C_GREEN, MENU_OPTION, C_WHITE
+
 
 class Menu:
 
@@ -18,7 +20,14 @@ class Menu:
         pygame.mixer_music.play(-1)
         while True:
             self.window.blit(source=self.surf, dest=self.rect)
+            self.menu_text(text_size=70, text="SPACE", text_color=C_GREEN, text_center_pos=((WIN_WIDTH / 2), 100))
+            self.menu_text(text_size=70, text="WARS", text_color=C_GREEN, text_center_pos=((WIN_WIDTH / 2), 180))
+
+            for i in range(len(MENU_OPTION)):
+                self.menu_text(text_size=20, text=MENU_OPTION[i], text_color=C_WHITE, text_center_pos=((WIN_WIDTH / 2), 400 + 30 * i))
+
             pygame.display.flip()
+
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
