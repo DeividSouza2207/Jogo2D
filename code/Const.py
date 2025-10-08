@@ -1,6 +1,7 @@
 # C
 C_GREEN = (0, 255, 0)
 C_WHITE = (255, 255, 255)
+C_YELLOW = (255, 255, 0)
 
 # M
 MENU_OPTION = ('NEW GAME',
