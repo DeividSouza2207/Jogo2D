@@ -1,3 +1,4 @@
+import random
 import sys
 from pygame.font import Font
 
@@ -5,9 +6,9 @@ import pygame
 from pygame.rect import Rect
 from pygame.surface import Surface
 
-from code.Const import C_WHITE, WIN_HEIGHT, WIN_WIDTH
-from code.Entity import Entity
-from code.EntityFactory import EntityFactory
+from code.Const import C_WHITE, WIN_HEIGHT, WIN_WIDTH, EVENT_ENEMY
+from code.Enemy import Enemy
+
 from code.Player import Player
 
 
@@ -15,6 +16,7 @@ class Level:
 
     def __init__(self, window, name, game_mode):
 
+        self.timeout = 20000  # 20s
         self.window = window
         self.name = name
         self.game_mode = game_mode
@@ -23,7 +25,9 @@ class Level:
         self.rect = self.surf.get_rect(left=0, top=0)
         #jogdor
         self.player = Player('./asset/Player.png', (350, 390))
-        self.timeout = 20000 # 20s
+        #inimigo
+        pygame.time.set_timer(EVENT_ENEMY, 2000)
+        self.entity_list = []
 
     def run(self):
         pygame.mixer_music.load(f'./asset/Level1.mp3')
@@ -40,12 +44,27 @@ class Level:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == EVENT_ENEMY:
+                    y_pos = 50
+                    spacing = 60
+                    for i in range(5):
+                        x_pos = WIN_WIDTH + (i * spacing)
+                        enemy = Enemy('Enemy', (x_pos, y_pos))
+                        self.entity_list.append(enemy)
+
             #entrada do player
             self.player.move()
             # desenha o fundo
             self.window.blit(source=self.surf, dest=self.rect)
             # desenha jogador por cima do fundo
             self.player.draw((self.window))
+            # desenha inimigos
+            for enemy in self.entity_list[:]:
+                enemy.move()
+                enemy.draw(self.window)
+                if enemy.rect.left > WIN_WIDTH or enemy.rect.right < 0:
+                    self.entity_list.remove(enemy)
+
 
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))
             self.level_text(14, f'fps: {clock.get_fps():.0f}', C_WHITE, (10, WIN_HEIGHT - 35))

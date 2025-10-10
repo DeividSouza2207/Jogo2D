@@ -1,7 +1,13 @@
 # C
+import pygame.constants
+
 C_GREEN = (0, 255, 0)
 C_WHITE = (255, 255, 255)
 C_YELLOW = (255, 255, 0)
+
+#E
+ENTITY_SPEED = {'Enemy': 2}
+EVENT_ENEMY = pygame.USEREVENT + 1
 
 # M
 MENU_OPTION = ('NEW GAME',

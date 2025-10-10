@@ -14,3 +14,7 @@ class Entity(ABC):
     @abstractmethod
     def move(self):
         pass
+
+    @abstractmethod
+    def draw(self, surface):
+        pass

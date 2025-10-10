@@ -8,8 +8,8 @@ class Player(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
         self.surf = pygame.image.load('./asset/Player.png')
-        self.rect = self.surf.get_rect(topleft=(350, 390))
-        self.speed = 4
+        self.rect = self.surf.get_rect(topleft=position)
+        self.speed = 8
 
     def move(self):
         pressed_key = pygame.key.get_pressed()
