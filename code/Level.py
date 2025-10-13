@@ -8,6 +8,7 @@ from pygame.surface import Surface
 
 from code.Const import C_WHITE, WIN_HEIGHT, WIN_WIDTH, EVENT_ENEMY
 from code.Enemy import Enemy
+from code.EntityMediator import EntityMediator
 
 from code.Player import Player
 
@@ -16,6 +17,7 @@ class Level:
 
     def __init__(self, window, name, game_mode):
 
+        self.entity_list = []
         self.timeout = 20000  # 20s
         self.window = window
         self.name = name
@@ -24,7 +26,8 @@ class Level:
         self.surf = pygame.image.load('./asset/MenuBg.jpg')
         self.rect = self.surf.get_rect(left=0, top=0)
         #jogdor
-        self.player = Player('./asset/Player.png', (350, 390))
+        self.player = Player('Player', (350, 390))
+        self.entity_list.append(self.player)
         #inimigo
         pygame.time.set_timer(EVENT_ENEMY, 2000)
         self.entity_list = []
@@ -70,6 +73,9 @@ class Level:
             self.level_text(14, f'fps: {clock.get_fps():.0f}', C_WHITE, (10, WIN_HEIGHT - 35))
             #self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
             pygame.display.flip()
+            # collisions
+            EntityMediator.verify_collision(entity_list=self.entity_list)
+            EntityMediator.verify_health(entity_list=self.entity_list)
 
             if remaining <= 0:
                 print('Acabou o tempo')

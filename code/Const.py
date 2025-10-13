@@ -6,6 +6,10 @@ C_WHITE = (255, 255, 255)
 C_YELLOW = (255, 255, 0)
 
 #E
+ENTITY_HEALTH ={
+                'Player': 300,
+                'Enemy': 50
+}
 ENTITY_SPEED = {'Enemy': 2}
 EVENT_ENEMY = pygame.USEREVENT + 1
 
