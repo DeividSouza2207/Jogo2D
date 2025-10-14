@@ -21,3 +21,4 @@ class EntityMediator:
         for ent in entity_list:
             if ent.health <= 0:
                 entity_list.remove(ent)
+

@@ -27,10 +27,8 @@ class Level:
         self.rect = self.surf.get_rect(left=0, top=0)
         #jogdor
         self.player = Player('Player', (350, 390))
-        self.entity_list.append(self.player)
-        #inimigo
+        self.entity_list = [self.player]  # cria a lista já com o player dentro
         pygame.time.set_timer(EVENT_ENEMY, 2000)
-        self.entity_list = []
 
     def run(self):
         pygame.mixer_music.load(f'./asset/Level1.mp3')
@@ -44,6 +42,9 @@ class Level:
             pygame.display.flip()
 
             for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.player.shoot()
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -67,6 +68,14 @@ class Level:
                 enemy.draw(self.window)
                 if enemy.rect.left > WIN_WIDTH or enemy.rect.right < 0:
                     self.entity_list.remove(enemy)
+
+            for shoot in self.player.shoots:
+                shoot.draw(self.window)
+
+            for shoot in self.player.shoots[:]:
+                shoot.move()
+                if shoot.off_window():
+                    self.player.shoots.remove(shoot)
 
 
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))

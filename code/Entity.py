@@ -11,7 +11,7 @@ class Entity(ABC):
         self.name = name
         self.surf = pygame.image.load('./asset/MenuBg.jpg')
         self.rect = self.surf.get_rect(left=0, top=0)
-        self.health = ENTITY_HEALTH[self.name]
+        self.health = ENTITY_HEALTH.get(self.name, 1)
 
     @abstractmethod
     def move(self):
