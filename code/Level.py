@@ -66,6 +66,31 @@ class Level:
             for enemy in self.entity_list[:]:
                 enemy.move()
                 enemy.draw(self.window)
+                for entity in self.entity_list:
+                    if isinstance(entity, Enemy):
+                        # tiros aleatório do inimigo
+                        if random.randint(0, 1000) < 5:
+                            enemy.shoot()
+                        for shot in entity.shoots[:]:
+                            shot.move()
+                            shot.draw(self.window)
+
+                            if shot.off_window():
+                                if shot in enemy.shoots:
+                                    enemy.shoots.remove(shot)
+                                continue
+
+                            if shot.rect.colliderect(self.player.rect):
+                                self.player.health -=1
+                                if shot in enemy.shoots:
+                                    enemy.shoots.remove(shot)
+
+
+            for shoot in self.player.shoots[:]:
+                shoot.move()
+                if shoot.off_window():
+                    self.player.shoots.remove(shoot)
+
                 if enemy.rect.left > WIN_WIDTH or enemy.rect.right < 0:
                     self.entity_list.remove(enemy)
 
@@ -83,7 +108,7 @@ class Level:
             #self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
             pygame.display.flip()
             # collisions
-            EntityMediator.verify_collision(entity_list=self.entity_list)
+            EntityMediator.verify_collision(self.entity_list, self.player)
             EntityMediator.verify_health(entity_list=self.entity_list)
 
             if remaining <= 0:

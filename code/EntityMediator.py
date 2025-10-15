@@ -1,4 +1,5 @@
 from code.Enemy import Enemy
+from code.EnemyShot import EnemyShot
 from code.Entity import Entity
 
 
@@ -10,8 +11,9 @@ class EntityMediator:
             if ent.rect.right < 0:
                 ent.health = 0
 
+
     @staticmethod
-    def verify_collision(entity_list: list[Entity]):
+    def verify_collision(entity_list: list[Entity], player):
         for i in range(len(entity_list)):
             test_entity = entity_list[i]
             EntityMediator.__verify_collision_window(test_entity)
