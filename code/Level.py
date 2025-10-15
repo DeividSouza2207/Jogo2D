@@ -64,43 +64,34 @@ class Level:
             self.player.draw((self.window))
             # desenha inimigos
             for enemy in self.entity_list[:]:
-                enemy.move()
-                enemy.draw(self.window)
-                for entity in self.entity_list:
-                    if isinstance(entity, Enemy):
-                        # tiros aleatório do inimigo
-                        if random.randint(0, 1000) < 5:
-                            enemy.shoot()
-                        for shot in entity.shoots[:]:
-                            shot.move()
-                            shot.draw(self.window)
+                if isinstance(enemy, Enemy):
+                    enemy.move()
+                    enemy.draw(self.window)
 
-                            if shot.off_window():
-                                if shot in enemy.shoots:
-                                    enemy.shoots.remove(shot)
-                                continue
+                    # Tiro aleatório
+                    if random.randint(0, 2000) < 5:
+                        enemy.shoot()
 
-                            if shot.rect.colliderect(self.player.rect):
-                                self.player.health -=1
-                                if shot in enemy.shoots:
-                                    enemy.shoots.remove(shot)
+                    for shot in enemy.shoots[:]:
+                        shot.move()
+                        shot.draw(self.window)
+
+                        if shot.off_window():
+                            enemy.shoots.remove(shot)
+                            continue
+
+                        if shot.rect.colliderect(self.player.rect):
+                            self.player.health -= 1
+                            enemy.shoots.remove(shot)
 
 
-            for shoot in self.player.shoots[:]:
-                shoot.move()
-                if shoot.off_window():
-                    self.player.shoots.remove(shoot)
-
-                if enemy.rect.left > WIN_WIDTH or enemy.rect.right < 0:
-                    self.entity_list.remove(enemy)
-
-            for shoot in self.player.shoots:
-                shoot.draw(self.window)
 
             for shoot in self.player.shoots[:]:
                 shoot.move()
                 if shoot.off_window():
                     self.player.shoots.remove(shoot)
+                else:
+                    shoot.draw(self.window)
 
 
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))

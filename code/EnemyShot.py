@@ -6,7 +6,7 @@ from code.Entity import Entity
 
 class EnemyShot(Entity):
 
-    def __init__(self, name: str, position: tuple):
+    def __init__(self, name: str, position: tuple, speed=1):
         super().__init__(name, position)
         self.surf = pygame.Surface((4,10))
         self.surf.fill((255,0,0))
@@ -21,4 +21,4 @@ class EnemyShot(Entity):
         surface.blit(self.surf, self.rect)
 
     def off_window(self):
-        return self.rect.bottom < 0 or self.rect.top > 520
+        return self.rect.top > 600
