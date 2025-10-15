@@ -6,6 +6,13 @@ C_WHITE = (255, 255, 255)
 C_YELLOW = (255, 255, 0)
 
 #E
+ENTITY_DAMAGE = {
+    'Player': 1,
+    'Enemy': 1,
+    'PlayerShot': 50,
+    'EnemyShot': 15
+}
+
 ENTITY_HEALTH ={
                 'Player': 300,
                 'Enemy': 50,

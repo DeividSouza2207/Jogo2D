@@ -30,6 +30,8 @@ class Level:
         self.entity_list = [self.player]  # cria a lista já com o player dentro
         pygame.time.set_timer(EVENT_ENEMY, 2000)
 
+
+
     def run(self):
         pygame.mixer_music.load(f'./asset/Level1.mp3')
         pygame.mixer_music.play(-1)
@@ -45,6 +47,7 @@ class Level:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.player.shoot()
+                        self.entity_list.extend(self.player.shoots[-1:])
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
