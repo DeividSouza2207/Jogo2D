@@ -9,7 +9,7 @@ class PlayerShot(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
         self.surf = pygame.Surface((4,10))
-        self.surf.fill((255,0,0))
+        self.surf.fill((0,255,0))
         self.rect = self.surf.get_rect(midbottom=position)
         self.speed = 10
         self.health = 1

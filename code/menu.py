@@ -5,7 +5,7 @@ from pygame.rect import Rect
 from pygame.surface import Surface
 from pygame.font import Font
 
-from code.Const import WIN_WIDTH, C_GREEN, MENU_OPTION, C_WHITE, C_YELLOW
+from code.Const import WIN_WIDTH, C_GREEN, MENU_OPTION, C_WHITE, C_YELLOW, C_GRAY
 
 
 class Menu:
@@ -27,9 +27,13 @@ class Menu:
 
             for i in range(len(MENU_OPTION)):
                 if i == menu_option:
-                    self.menu_text(text_size=20, text=MENU_OPTION[i], text_color=C_YELLOW, text_center_pos=((WIN_WIDTH / 2), 400 + 30 * i))
+                    self.menu_text(text_size=30, text=MENU_OPTION[i], text_color=C_YELLOW, text_center_pos=((WIN_WIDTH / 2), 300 + 30 * i))
                 else:
-                    self.menu_text(text_size=20, text=MENU_OPTION[i], text_color=C_WHITE, text_center_pos=((WIN_WIDTH / 2), 400 + 30 * i))
+                    self.menu_text(text_size=30, text=MENU_OPTION[i], text_color=C_WHITE, text_center_pos=((WIN_WIDTH / 2), 300 + 30 * i))
+
+            self.menu_text(text_size=20, text="SPACE - atirar", text_color=C_GRAY, text_center_pos=((WIN_WIDTH / 2), 450))
+            self.menu_text(text_size=20, text="KEY_RIGHT - vai para a direita", text_color=C_GRAY,text_center_pos=((WIN_WIDTH / 2), 475))
+            self.menu_text(text_size=20, text="KEY_LEFT - vai para a esquerda", text_color=C_GRAY,text_center_pos=((WIN_WIDTH / 2), 500))
             pygame.display.flip()
 
             for event in pygame.event.get():

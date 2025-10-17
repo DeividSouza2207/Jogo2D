@@ -18,7 +18,7 @@ class Level:
     def __init__(self, window, name, game_mode):
 
         self.entity_list = []
-        self.timeout = 20000  # 20s
+        self.timeout = 40000  # 20s
         self.window = window
         self.name = name
         self.game_mode = game_mode
