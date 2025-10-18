@@ -41,7 +41,7 @@ class Level:
             clock.tick(60)
             timeout = pygame.time.get_ticks() - start_time
             remaining = max(0 , self.timeout - timeout)
-            pygame.display.flip()
+            #pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -59,12 +59,14 @@ class Level:
                         enemy = Enemy('Enemy', (x_pos, y_pos))
                         self.entity_list.append(enemy)
 
-            #entrada do player
-            self.player.move()
+
             # desenha o fundo
             self.window.blit(source=self.surf, dest=self.rect)
-            # desenha jogador por cima do fundo
-            self.player.draw((self.window))
+
+            # entrada do player
+            for entity in self.entity_list:
+                entity.move()
+                entity.draw(self.window)
             # desenha inimigos
             for enemy in self.entity_list[:]:
                 if isinstance(enemy, Enemy):
@@ -76,16 +78,16 @@ class Level:
                         enemy.shoot()
 
                     for shot in enemy.shoots[:]:
-                        shot.move()
-                        shot.draw(self.window)
+                        self.entity_list.append(shot)  # Adiciona os tiros novos
+                        enemy.shoots.remove(shot)
 
                         if shot.off_window():
                             enemy.shoots.remove(shot)
                             continue
 
-                        if shot.rect.colliderect(self.player.rect):
-                            self.player.health -= 1
-                            enemy.shoots.remove(shot)
+                        # if shot.rect.colliderect(self.player.rect):
+                        #     self.player.health -= 1
+                        #     enemy.shoots.remove(shot)
 
 
 
@@ -102,8 +104,12 @@ class Level:
             #self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
             pygame.display.flip()
             # collisions
-            EntityMediator.verify_collision(self.entity_list, self.player)
+            EntityMediator.verify_collision(entity_list=self.entity_list)
             EntityMediator.verify_health(entity_list=self.entity_list)
+            # if self.player not in self.entity_list:
+            #     print("Game Over!")
+            #     pygame.quit()
+            #     sys.exit()
 
             if remaining <= 0:
                 print('Acabou o tempo')
