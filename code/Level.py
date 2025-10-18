@@ -28,6 +28,7 @@ class Level:
         #jogdor
         self.player = Player('Player', (350, 390))
         self.entity_list = [self.player]  # cria a lista já com o player dentro
+        self.score = 0
         pygame.time.set_timer(EVENT_ENEMY, 2000)
 
 
@@ -41,7 +42,6 @@ class Level:
             clock.tick(60)
             timeout = pygame.time.get_ticks() - start_time
             remaining = max(0 , self.timeout - timeout)
-            #pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -85,11 +85,6 @@ class Level:
                             enemy.shoots.remove(shot)
                             continue
 
-                        # if shot.rect.colliderect(self.player.rect):
-                        #     self.player.health -= 1
-                        #     enemy.shoots.remove(shot)
-
-
 
             for shoot in self.player.shoots[:]:
                 shoot.move()
@@ -98,22 +93,27 @@ class Level:
                 else:
                     shoot.draw(self.window)
 
-
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))
             self.level_text(14, f'fps: {clock.get_fps():.0f}', C_WHITE, (10, WIN_HEIGHT - 35))
-            #self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
+            self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
+            self.level_text(14, f'Life: {self.player.health}', C_WHITE, (10, 30))
+            self.level_text(14, f'Score: {self.score}', C_WHITE, (10, 50))
             pygame.display.flip()
             # collisions
             EntityMediator.verify_collision(entity_list=self.entity_list)
-            EntityMediator.verify_health(entity_list=self.entity_list)
-            # if self.player not in self.entity_list:
-            #     print("Game Over!")
-            #     pygame.quit()
-            #     sys.exit()
+            EntityMediator.verify_health(
+                entity_list=self.entity_list,
+                on_enemy_killed=self.enemy_killed
+            )
+
 
             if remaining <= 0:
                 print('Acabou o tempo')
                 break
+
+    def enemy_killed(self, enemy):
+        self.score += 100  # ou qualquer valor por inimigo
+
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
