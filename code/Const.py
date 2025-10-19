@@ -28,7 +28,7 @@ ENTITY_SPEED = {'Enemy': 2,
 
 
 EVENT_ENEMY = pygame.USEREVENT + 1
-
+EVENT_TIMEOUT = pygame.USEREVENT + 2
 
 # M
 MENU_OPTION = ('NEW GAME',
@@ -38,6 +38,9 @@ MENU_OPTION = ('NEW GAME',
 
 # P
 PLAYER_KEY_SHOOT = {'Player': pygame.K_RCTRL}
+
+# T
+TIMEOUT_STEP = 100
 
 # W
 WIN_WIDTH = 800

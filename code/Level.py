@@ -6,7 +6,7 @@ import pygame
 from pygame.rect import Rect
 from pygame.surface import Surface
 
-from code.Const import C_WHITE, WIN_HEIGHT, WIN_WIDTH, EVENT_ENEMY
+from code.Const import C_WHITE, WIN_HEIGHT, WIN_WIDTH, EVENT_ENEMY, EVENT_TIMEOUT, TIMEOUT_STEP
 from code.Enemy import Enemy
 from code.EntityMediator import EntityMediator
 
@@ -25,23 +25,24 @@ class Level:
         #fundo
         self.surf = pygame.image.load('./asset/MenuBg.jpg')
         self.rect = self.surf.get_rect(left=0, top=0)
-        #jogdor
+        #jogador
         self.player = Player('Player', (350, 390))
         self.entity_list = [self.player]  # cria a lista já com o player dentro
         self.score = 0
         pygame.time.set_timer(EVENT_ENEMY, 2000)
+        pygame.time.set_timer(EVENT_TIMEOUT, TIMEOUT_STEP)
 
 
 
     def run(self):
-        pygame.mixer_music.load(f'./asset/Level1.mp3')
+        pygame.mixer_music.load(f'./asset/Level2.mp3')
         pygame.mixer_music.play(-1)
         clock = pygame.time.Clock()
-        start_time = pygame.time.get_ticks()
+        #start_time = pygame.time.get_ticks()
         while True:
             clock.tick(60)
-            timeout = pygame.time.get_ticks() - start_time
-            remaining = max(0 , self.timeout - timeout)
+            #timeout = pygame.time.get_ticks() - start_time
+            #remaining = max(0 , self.timeout - timeout)
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -58,6 +59,11 @@ class Level:
                         x_pos = WIN_WIDTH + (i * spacing)
                         enemy = Enemy('Enemy', (x_pos, y_pos))
                         self.entity_list.append(enemy)
+
+                if event.type == EVENT_TIMEOUT:
+                    self.timeout -= TIMEOUT_STEP
+                    if self.timeout == 0:
+                        return True
 
 
             # desenha o fundo
@@ -92,7 +98,7 @@ class Level:
                     self.player.shoots.remove(shoot)
                 else:
                     shoot.draw(self.window)
-
+            # texts HUD
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))
             self.level_text(14, f'fps: {clock.get_fps():.0f}', C_WHITE, (10, WIN_HEIGHT - 35))
             self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
@@ -106,14 +112,12 @@ class Level:
                 on_enemy_killed=self.enemy_killed
             )
 
-
-            if remaining <= 0:
-                print('Acabou o tempo')
-                break
+            # if remaining <= 0:
+            #     print('Acabou o tempo')
+            #     break
 
     def enemy_killed(self, enemy):
-        self.score += 100  # ou qualquer valor por inimigo
-
+        self.score += 10  # ou qualquer valor por inimigo
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
